@@ -1,0 +1,59 @@
+name: moodbox_app
+description: "MoodBox - Jokes, Recipes, Stories, Wallpapers & Videos"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # Networking
+  dio: ^5.4.3+1
+  connectivity_plus: ^6.0.3
+
+  # State management
+  provider: ^6.1.2
+
+  # Local storage (favorites, theme preference, onboarding flag - no login needed)
+  shared_preferences: ^2.2.3
+
+  # UI / Media
+  cached_network_image: ^3.3.1
+  google_fonts: ^6.2.1
+  shimmer: ^3.0.0
+  flutter_staggered_grid_view: ^0.7.0
+  photo_view: ^0.15.0
+  flutter_html: ^3.0.0-beta.2
+  shimmer_animation: ^2.1.0+1
+
+  # Video
+  video_player: ^2.9.1
+  chewie: ^1.8.1
+  youtube_player_flutter: ^9.0.3
+
+  # Wallpaper & downloads (Play Store scoped-storage friendly)
+  async_wallpaper: ^2.1.0
+  gal: ^2.3.0
+  permission_handler: ^11.3.1
+  path_provider: ^2.1.4
+
+  # Misc
+  share_plus: ^10.0.2
+  url_launcher: ^6.2.6
+  package_info_plus: ^8.0.0
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+
