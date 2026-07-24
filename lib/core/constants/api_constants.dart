@@ -5,7 +5,7 @@ class ApiConstants {
   ApiConstants._();
 
   // TODO: replace with your deployed backend, e.g. https://api.moodbox.com/api/public
-  static const String baseUrl = 'http://localhost:5000/api/public';
+  static const String baseUrl = 'https://moodbox-backend.onrender.com/api/public';
 
   static const String categories = '/categories';
   static const String subcategories = '/subcategories';
