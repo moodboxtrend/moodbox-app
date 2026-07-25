@@ -90,13 +90,12 @@ class StoryDetails {
 }
 
 class JokeDetails {
-  final String? jokeType;
   final String? language;
-  JokeDetails({this.jokeType, this.language});
+  JokeDetails({this.language});
 
   factory JokeDetails.fromJson(Map<String, dynamic>? json) {
     json ??= {};
-    return JokeDetails(jokeType: json['jokeType'], language: json['language']);
+    return JokeDetails(language: json['language']);
   }
 }
 
