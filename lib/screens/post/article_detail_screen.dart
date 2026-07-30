@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import '../../core/utils/date_formatter.dart';
 import '../../core/utils/share_helper.dart';
 import '../../models/post_model.dart';
 import '../../widgets/favorite_button.dart';
@@ -45,20 +44,11 @@ class ArticleDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(post.title, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Icon(Icons.remove_red_eye_outlined, size: 15, color: theme.colorScheme.onSurface.withOpacity(0.5)),
-              const SizedBox(width: 4),
-              Text('${post.views} views', style: theme.textTheme.labelMedium),
-              const SizedBox(width: 14),
-              Text(DateFormatter.readable(post.publishDate), style: theme.textTheme.labelMedium),
-              if (post.storyDetails != null && post.storyDetails!.readingTime > 0) ...[
-                const SizedBox(width: 14),
-                Text('${post.storyDetails!.readingTime} min read', style: theme.textTheme.labelMedium),
-              ],
-            ],
-          ),
+          if (post.storyDetails != null && post.storyDetails!.readingTime > 0)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text('${post.storyDetails!.readingTime} min read', style: theme.textTheme.labelMedium),
+            ),
           const Divider(height: 32),
           if (post.content.isNotEmpty)
             Html(

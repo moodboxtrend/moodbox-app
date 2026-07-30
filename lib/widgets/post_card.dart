@@ -1,16 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/constants/app_colors.dart';
-import '../core/utils/date_formatter.dart';
 import '../models/post_model.dart';
 import 'network_image_safe.dart';
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-String _fmtViews(int v) {
-  if (v >= 1000000) return '${(v / 1000000).toStringAsFixed(1)}M';
-  if (v >= 1000) return '${(v / 1000).toStringAsFixed(1)}K';
-  return '$v';
-}
 
 // ── Trending card (used on Home screen "Trending Today" section) ──────────────
 
@@ -53,7 +44,7 @@ class TrendingPostCard extends StatelessWidget {
           ],
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // ── Thumbnail ──
             ClipRRect(
@@ -84,6 +75,8 @@ class TrendingPostCard extends StatelessWidget {
             // ── Content ──
             Expanded(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Category chip
@@ -113,33 +106,6 @@ class TrendingPostCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       height: 1.35,
                     ),
-                  ),
-                  const SizedBox(height: 6),
-
-                  // Views + date
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.remove_red_eye_outlined,
-                        size: 12,
-                        color: theme.colorScheme.onSurface.withOpacity(0.4),
-                      ),
-                      const SizedBox(width: 3),
-                      Text(
-                        _fmtViews(post.views),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.5),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        DateFormatter.timeAgo(post.publishDate),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.4),
-                        ),
-                      ),
-                    ],
                   ),
                 ],
               ),

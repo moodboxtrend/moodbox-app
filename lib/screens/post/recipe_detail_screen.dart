@@ -95,7 +95,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
           if (recipe != null) ...[
             const SizedBox(height: 20),
 
-            // ── Quick Info Bar: 🕒 Time | 🍽️ Servings | 💧 Difficulty ─────────
+            // ── Quick Info Bar: 🕒 Time | 🍽️ Servings ─────────────────────────
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
@@ -117,15 +117,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
                   _QuickInfoItem(
                     icon: Icons.restaurant_menu_rounded,
                     label: '${recipe.servings} Servings',
-                  ),
-                  Container(
-                    height: 20,
-                    width: 1,
-                    color: theme.colorScheme.onSurface.withOpacity(0.12),
-                  ),
-                  _QuickInfoItem(
-                    icon: Icons.water_drop_outlined,
-                    label: recipe.difficulty,
                   ),
                 ],
               ),
