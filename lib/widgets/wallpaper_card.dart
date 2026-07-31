@@ -25,37 +25,10 @@ class WallpaperCard extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             NetworkImageSafe(url: post.featuredImageUrl, borderRadius: BorderRadius.circular(18)),
-            Positioned.fill(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black.withOpacity(0.55)],
-                    stops: const [0.6, 1.0],
-                  ),
-                ),
-              ),
-            ),
             if (showPlayIcon)
               const Center(
                 child: Icon(Icons.play_circle_fill_rounded, color: Colors.white, size: 44),
               ),
-            Positioned(
-              left: 10,
-              right: 10,
-              bottom: 10,
-              child: Text(
-                post.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 13,
-                ),
-              ),
-            ),
           ],
         ),
       ),
