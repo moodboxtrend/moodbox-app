@@ -76,7 +76,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ListTile(
             leading: const Icon(Icons.share_outlined),
             title: const Text('Share this app'),
-            onTap: () => Share.share('Check out ${AppConstants.appName} for jokes, recipes, stories, wallpapers and videos!'),
+            onTap: () {
+              const playStoreUrl = 'https://play.google.com/store';
+              Share.share(
+                'Install ${AppConstants.appName} to get jokes, recipes, stories, wallpapers, and videos in one app.\n\n$playStoreUrl',
+              );
+            },
           ),
           ListTile(
             leading: const Icon(Icons.privacy_tip_outlined),
