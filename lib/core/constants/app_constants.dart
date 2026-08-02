@@ -21,7 +21,6 @@ class AppConstants {
   static const String prefThemeMode = 'theme_mode';
   static const String prefOnboardingSeen = 'onboarding_seen';
 
-  // TODO: set this to your actual hosted privacy policy before publishing.
-  static const String privacyPolicyUrl = 'https://your-domain.com/privacy-policy';
-  static const String termsUrl = 'https://your-domain.com/terms';
+  static const String privacyPolicyUrl = 'https://moodbox-policy.nextrendx.in/';
+  static const String termsUrl = 'https://moodbox-policy.nextrendx.in/terms-of-service.html';
 }
