@@ -21,6 +21,9 @@ class AppConstants {
   static const String prefThemeMode = 'theme_mode';
   static const String prefOnboardingSeen = 'onboarding_seen';
 
+  static const String packageName = 'com.moodbox.app';
+  static const String playStoreUrl = 'https://play.google.com/store/apps/details?id=$packageName';
+
   static const String privacyPolicyUrl = 'https://moodbox-policy.nextrendx.in/';
   static const String termsUrl = 'https://moodbox-policy.nextrendx.in/terms-of-service.html';
 }

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../constants/app_constants.dart';
 import '../../models/post_model.dart';
 import '../../services/post_service.dart';
 
@@ -123,6 +124,6 @@ class ShareHelper {
   }
 
   static Future<String> _getPlayStoreUrl() async {
-    return 'https://play.google.com/store';
+    return AppConstants.playStoreUrl;
   }
 }
