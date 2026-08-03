@@ -134,6 +134,17 @@ class _ReelItemState extends State<_ReelItem> {
   bool _hasError = false;
   bool _isPlaying = true;
   bool _isDownloading = false;
+  bool _isSharing = false;
+
+  Future<void> _shareVideo() async {
+    if (_isSharing) return;
+    setState(() => _isSharing = true);
+    try {
+      await ShareHelper.sharePost(widget.post);
+    } finally {
+      if (mounted) setState(() => _isSharing = false);
+    }
+  }
 
   @override
   void initState() {
@@ -326,14 +337,23 @@ class _ReelItemState extends State<_ReelItem> {
               // Share button
               if (post.allowShare)
                 GestureDetector(
-                  onTap: () => ShareHelper.sharePost(post),
+                  onTap: _isSharing ? null : _shareVideo,
                   child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration: const BoxDecoration(
                       color: Colors.black38,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.share_outlined, color: Colors.white, size: 24),
+                    child: _isSharing
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Icon(Icons.share_outlined, color: Colors.white, size: 24),
                   ),
                 ),
 
