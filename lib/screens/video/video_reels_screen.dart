@@ -273,9 +273,9 @@ class _ReelItemState extends State<_ReelItem> {
                     : Stack(
                         alignment: Alignment.center,
                         children: [
-                          if (post.featuredImageUrl.isNotEmpty)
+                          if (post.resolvedThumbnailUrl.isNotEmpty)
                             Positioned.fill(
-                              child: Image.network(post.featuredImageUrl, fit: BoxFit.cover),
+                              child: Image.network(post.resolvedThumbnailUrl, fit: BoxFit.cover),
                             ),
                           const CircularProgressIndicator(color: Colors.white),
                         ],

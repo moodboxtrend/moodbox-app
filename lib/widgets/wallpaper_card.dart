@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/post_model.dart';
 import 'network_image_safe.dart';
+import 'video_frame_preview.dart';
 
 /// Grid card used for Wallpapers and Videos feeds (Pinterest-style tile).
 class WallpaperCard extends StatelessWidget {
@@ -17,6 +18,27 @@ class WallpaperCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final thumbUrl = post.resolvedThumbnailUrl;
+    final videoUrl = post.videoDetails?.videoUrl ?? '';
+
+    Widget backgroundWidget;
+    if (thumbUrl.isNotEmpty) {
+      backgroundWidget = NetworkImageSafe(
+        url: thumbUrl,
+        borderRadius: BorderRadius.circular(18),
+      );
+    } else if (videoUrl.isNotEmpty) {
+      backgroundWidget = VideoFramePreview(
+        videoUrl: videoUrl,
+        borderRadius: BorderRadius.circular(18),
+      );
+    } else {
+      backgroundWidget = NetworkImageSafe(
+        url: '',
+        borderRadius: BorderRadius.circular(18),
+      );
+    }
+
     return GestureDetector(
       onTap: onTap,
       child: ClipRRect(
@@ -24,7 +46,7 @@ class WallpaperCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            NetworkImageSafe(url: post.featuredImageUrl, borderRadius: BorderRadius.circular(18)),
+            backgroundWidget,
             if (showPlayIcon)
               const Center(
                 child: Icon(Icons.play_circle_fill_rounded, color: Colors.white, size: 44),
@@ -35,3 +57,4 @@ class WallpaperCard extends StatelessWidget {
     );
   }
 }
+

@@ -49,9 +49,9 @@ class TrendingPostCard extends StatelessWidget {
             // ── Thumbnail ──
             ClipRRect(
               borderRadius: BorderRadius.circular(14),
-              child: post.featuredImageUrl.isNotEmpty
+              child: post.resolvedThumbnailUrl.isNotEmpty
                   ? NetworkImageSafe(
-                      url: post.featuredImageUrl,
+                      url: post.resolvedThumbnailUrl,
                       width: 80,
                       height: 80,
                     )
@@ -66,7 +66,11 @@ class TrendingPostCard extends StatelessWidget {
                         ),
                       ),
                       child: Center(
-                        child: Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 28),
+                        child: Icon(
+                          post.contentType == 'video' ? Icons.play_arrow_rounded : Icons.auto_awesome_rounded,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                       ),
                     ),
             ),

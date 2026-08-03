@@ -212,4 +212,53 @@ class PostModel {
       videoDetails: contentType == 'video' ? VideoDetails.fromJson(json['videoDetails']) : null,
     );
   }
+
+  /// Returns explicit featuredImageUrl if non-empty, or auto-extracted thumbnail (YouTube / Cloudinary) for video posts.
+  String get resolvedThumbnailUrl {
+    if (featuredImageUrl.isNotEmpty) return featuredImageUrl;
+    if (videoDetails != null && videoDetails!.videoUrl.isNotEmpty) {
+      final url = videoDetails!.videoUrl;
+      final ytId = extractYoutubeId(url);
+      if (ytId != null && ytId.isNotEmpty) {
+        return 'https://img.youtube.com/vi/$ytId/hqdefault.jpg';
+      }
+      final cloudThumb = extractCloudinaryVideoThumbnail(url);
+      if (cloudThumb != null && cloudThumb.isNotEmpty) {
+        return cloudThumb;
+      }
+    }
+    return '';
+  }
+
+  static String? extractYoutubeId(String url) {
+    if (url.isEmpty) return null;
+    final regExp = RegExp(
+      r'^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=)([^#\&\?]*).*',
+      caseSensitive: false,
+    );
+    final match = regExp.firstMatch(url);
+    if (match != null && match.groupCount >= 2) {
+      final id = match.group(2);
+      if (id != null && id.length == 11) return id;
+    }
+    return null;
+  }
+
+  static String? extractCloudinaryVideoThumbnail(String url) {
+    if (url.isEmpty) return null;
+    if (url.contains('res.cloudinary.com') &&
+        (url.contains('/video/upload/') ||
+            url.endsWith('.mp4') ||
+            url.endsWith('.mov') ||
+            url.endsWith('.webm'))) {
+      var imgUrl = url.replaceAll(
+          RegExp(r'\.(mp4|mov|webm|avi|mkv)$', caseSensitive: false), '.jpg');
+      if (imgUrl.contains('/video/upload/') && !imgUrl.contains('/so_')) {
+        imgUrl = imgUrl.replaceFirst('/video/upload/', '/video/upload/so_1.0/');
+      }
+      return imgUrl;
+    }
+    return null;
+  }
 }
+
