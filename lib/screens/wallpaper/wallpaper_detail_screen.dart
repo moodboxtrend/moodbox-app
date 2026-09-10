@@ -1,12 +1,14 @@
 import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gal/gal.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/utils/share_helper.dart';
 import '../../core/utils/wallpaper_image_helper.dart';
 import '../../models/post_model.dart';
+import '../../services/ad_service.dart';
 import '../../widgets/favorite_button.dart';
 
 class WallpaperDetailScreen extends StatefulWidget {
@@ -42,12 +44,34 @@ class _WallpaperDetailScreenState extends State<WallpaperDetailScreen> {
       }
       final path = await _downloadToTempFile();
       await Gal.putImage(path, album: 'MoodBox');
-      _showSnack('Saved to your gallery');
+
+      // Show interstitial ad, then notify the user when the ad is closed
+      await AdService.instance.showInterstitialForDownload(
+        onAdDismissed: () {
+          Fluttertoast.showToast(
+            msg: 'Wallpaper downloaded to your gallery! 🖼️',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+          _showSnack('Wallpaper downloaded to your gallery! 🖼️');
+        },
+      );
     } catch (e) {
       _showSnack('Failed to save image. Please try again.');
     } finally {
       if (mounted) setState(() => _isBusy = false);
     }
+  }
+
+  void _onSetWallpaperButtonTapped() {
+    // Show interstitial ad first, then open options menu when ad is closed
+    AdService.instance.showInterstitialForDownload(
+      onAdDismissed: () {
+        if (mounted) {
+          _showWallpaperOptions();
+        }
+      },
+    );
   }
 
   Future<void> _setAsWallpaper(WallpaperTarget wallpaperTarget) async {
@@ -76,6 +100,11 @@ class _WallpaperDetailScreenState extends State<WallpaperDetailScreen> {
       );
 
       if (result.isSuccess) {
+        Fluttertoast.showToast(
+          msg: 'Wallpaper applied! ✨',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+        );
         _showSnack('Wallpaper applied');
       } else {
         _showSnack(result.error?.message ?? 'Could not set wallpaper on this device.');
@@ -249,7 +278,7 @@ class _WallpaperDetailScreenState extends State<WallpaperDetailScreen> {
                         Material(
                           color: Colors.transparent,
                           child: InkWell(
-                            onTap: _isBusy ? null : _showWallpaperOptions,
+                            onTap: _isBusy ? null : _onSetWallpaperButtonTapped,
                             borderRadius: BorderRadius.circular(22),
                             child: Container(
                               width: 50,

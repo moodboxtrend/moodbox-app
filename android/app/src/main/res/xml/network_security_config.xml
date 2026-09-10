@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow cleartext (HTTP) traffic for all domains (needed for video streaming) -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <!-- Trust system CAs for HTTPS -->
+            <certificates src="system"/>
+            <!-- Trust user-installed CAs in debug (optional, remove for stricter production) -->
+        </trust-anchors>
+    </base-config>
+</network-security-config>

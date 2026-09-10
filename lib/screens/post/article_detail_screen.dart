@@ -2,17 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../../core/utils/share_helper.dart';
 import '../../models/post_model.dart';
+import '../../services/ad_service.dart';
+import '../../widgets/ad_banner_widget.dart';
 import '../../widgets/favorite_button.dart';
 import '../../widgets/network_image_safe.dart';
 
 /// Detail layout for Jokes and Stories - a straightforward article view.
-class ArticleDetailScreen extends StatelessWidget {
+class ArticleDetailScreen extends StatefulWidget {
   final PostModel post;
   const ArticleDetailScreen({super.key, required this.post});
 
   @override
+  State<ArticleDetailScreen> createState() => _ArticleDetailScreenState();
+}
+
+class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Count this view and show interstitial if threshold reached.
+    AdService.instance.maybeShowInterstitial(widget.post.contentType);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final post = widget.post;
 
     return Scaffold(
       appBar: AppBar(
@@ -25,6 +40,7 @@ class ArticleDetailScreen extends StatelessWidget {
             ),
         ],
       ),
+      bottomNavigationBar: const AdBannerWidget(),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

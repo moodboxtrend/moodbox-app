@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../core/utils/share_helper.dart';
 import '../../models/post_model.dart';
+import '../../services/ad_service.dart';
+import '../../widgets/ad_banner_widget.dart';
 import '../../widgets/favorite_button.dart';
 import '../../widgets/network_image_safe.dart';
 
@@ -20,6 +22,8 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    // Count this recipe view and show interstitial if threshold reached.
+    AdService.instance.maybeShowInterstitial('recipe');
   }
 
   @override
@@ -49,6 +53,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen>
             ),
         ],
       ),
+      bottomNavigationBar: const AdBannerWidget(),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

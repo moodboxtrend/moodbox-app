@@ -46,7 +46,7 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final _postService = PostService();
   List<PostModel>? _posts;
   String? _error;
@@ -57,8 +57,13 @@ class _FavoritesScreenState extends State<FavoritesScreen>
 
   void _syncTabController(int length) {
     if (_tabCtrl == null || _lastTabLength != length) {
+      final oldIndex = _tabCtrl?.index ?? 0;
       _tabCtrl?.dispose();
-      _tabCtrl = TabController(length: length, vsync: this);
+      _tabCtrl = TabController(
+        length: length,
+        vsync: this,
+        initialIndex: oldIndex.clamp(0, length > 0 ? length - 1 : 0),
+      );
       _lastTabLength = length;
       _tabCtrl!.addListener(() => setState(() {}));
     }

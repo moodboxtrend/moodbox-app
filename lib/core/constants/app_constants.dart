@@ -20,6 +20,7 @@ class AppConstants {
   static const String prefFavorites = 'favorite_post_ids';
   static const String prefThemeMode = 'theme_mode';
   static const String prefOnboardingSeen = 'onboarding_seen';
+  static const String prefSwipeHintSeen = 'swipe_hint_seen';
 
   static const String packageName = 'com.moodbox.app';
   static const String playStoreUrl = 'https://play.google.com/store/apps/details?id=$packageName';

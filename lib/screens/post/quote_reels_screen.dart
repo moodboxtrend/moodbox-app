@@ -1,12 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gal/gal.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../core/utils/share_helper.dart';
 import '../../models/post_model.dart';
+import '../../services/ad_service.dart';
 import '../../services/post_service.dart';
 import '../../widgets/favorite_button.dart';
 import '../../widgets/state_placeholders.dart';
+import '../../widgets/swipe_hint_overlay.dart';
 
 /// Full-screen vertical scroll image viewer for quotes / motivational images.
 /// - Image is shown at its original aspect ratio (BoxFit.contain).
@@ -108,11 +111,27 @@ class _QuoteReelsScreenState extends State<QuoteReelsScreen> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: PageView.builder(
-        controller: _pageController,
-        scrollDirection: Axis.vertical,
-        itemCount: _posts.length,
-        itemBuilder: (context, index) => _QuoteItem(post: _posts[index]),
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: _pageController,
+            scrollDirection: Axis.vertical,
+            itemCount: _posts.length,
+            onPageChanged: (index) {
+              AdService.instance.maybeShowInterstitial('quote');
+            },
+            itemBuilder: (context, index) => _QuoteItem(post: _posts[index]),
+          ),
+          const Positioned(
+            bottom: 70,
+            left: 0,
+            right: 0,
+            child: SwipeHintOverlay(
+              prefKey: 'quote_swipe_hint_seen',
+              message: 'Swipe up for next quote 👆',
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -153,11 +172,22 @@ class _QuoteItemState extends State<_QuoteItem> {
           '${dir.path}/moodbox_quote_${widget.post.id}_${DateTime.now().millisecondsSinceEpoch}.jpg';
       await Dio().download(url, path);
       await Gal.putImage(path, album: 'MoodBox');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Saved to gallery 🖼️')),
-        );
-      }
+
+      // Show interstitial ad, then notify the user when the ad is closed
+      await AdService.instance.showInterstitialForDownload(
+        onAdDismissed: () {
+          Fluttertoast.showToast(
+            msg: 'Quote downloaded to your gallery! 🖼️',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Quote downloaded to your gallery! 🖼️')),
+            );
+          }
+        },
+      );
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
