@@ -57,7 +57,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: [
           const SizedBox(height: 8),
-          const _SectionLabel('Connect with us'),
           if (settings != null) ...[
             if (settings.facebook.isNotEmpty)
               ListTile(leading: const Icon(Icons.facebook), title: const Text('Facebook'), onTap: () => _openUrl(settings.facebook)),
@@ -69,10 +68,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ListTile(leading: const Icon(Icons.play_circle_outline_rounded), title: const Text('YouTube'), onTap: () => _openUrl(settings.youtube)),
             if (settings.whatsapp.isNotEmpty)
               ListTile(leading: const Icon(Icons.chat_bubble_outline_rounded), title: const Text('WhatsApp'), onTap: () => _openUrl(settings.whatsapp)),
+            if (settings.facebook.isNotEmpty || settings.instagram.isNotEmpty || settings.twitter.isNotEmpty || settings.youtube.isNotEmpty || settings.whatsapp.isNotEmpty)
+              const Divider(),
           ],
-
-          const Divider(),
-          const _SectionLabel('About'),
           ListTile(
             leading: const Icon(Icons.share_outlined),
             title: const Text('Share this app'),
@@ -99,25 +97,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           const SizedBox(height: 24),
         ],
-      ),
-    );
-  }
-}
-
-class _SectionLabel extends StatelessWidget {
-  final String label;
-  const _SectionLabel(this.label);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-              fontWeight: FontWeight.w700,
-            ),
       ),
     );
   }
